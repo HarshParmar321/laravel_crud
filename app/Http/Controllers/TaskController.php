@@ -85,17 +85,21 @@ class TaskController extends Controller
 
     $task = Task::findOrFail($id);
     
-    $data = $request->only(['title', 'description', 'due_date']);
-    $data['is_completed'] = $request->has('is_completed');
+    $task->title = $request->title;
+    $task->description = $request->description;
+    $task->due_date = $request->due_date;
+    $task->is_completed = $request->has('is_completed');
 
+    // If new image is uploaded, update it
     if ($request->hasFile('image')) {
-        $data['image'] = $request->file('image')->store('tasks', 'public');
+        $task->image = $request->file('image')->store('tasks', 'public');
     }
 
-    $task->update($data);
+    $task->save();
 
     return redirect()->route('tasks.index')->with('success', 'Task updated successfully!');
 }
+
 
 
     /**
