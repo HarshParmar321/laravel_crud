@@ -23,13 +23,3 @@ Route::get('/debug-error', function () {
     }
     return 'Log file not found';
 });
-
-
-Route::get('/migrate-now', function () {
-    try {
-        Artisan::call('migrate', ['--force' => true]);
-        return '✅ Migration complete!';
-    } catch (\Exception $e) {
-        return '❌ Migration failed: ' . $e->getMessage();
-    }
-});
