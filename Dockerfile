@@ -18,7 +18,10 @@ COPY . .
 # Install PHP dependencies
 RUN composer install --optimize-autoloader --no-dev
 
-# Permissions
+# Create storage symlink (IMPORTANT!)
+RUN php artisan storage:link
+
+# Set permissions
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 # Expose Laravel development port
