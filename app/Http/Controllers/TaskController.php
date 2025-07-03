@@ -27,31 +27,33 @@ class TaskController extends Controller
     /**
      * Store a newly created task in storage.
      */
-   public function store(Request $request)
+    public function store(Request $request)
 {
     $request->validate([
-        'title' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'due_date' => 'nullable|date|before:2100-01-01',
+        'title' => 'required',
+        'description' => 'nullable',
+        'due_date' => 'nullable|date',
         'is_completed' => 'nullable|boolean',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048', // Max 2MB
+        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
     ]);
 
-    $data = $request->only(['title', 'description', 'due_date']);
-    $data['is_completed'] = $request->has('is_completed');
+    // Create a new Task instance
+    $task = new Task();
+    $task->title = $request->title;
+    $task->description = $request->description;
+    $task->due_date = $request->due_date;
+    $task->is_completed = $request->has('is_completed');
 
+    // Handle image upload
     if ($request->hasFile('image')) {
-    $imagePath = $request->file('image')->store('tasks', 'public');
-    $task->image = $imagePath;
+        $imagePath = $request->file('image')->store('tasks', 'public');
+        $task->image = $imagePath;
+    }
+
+    $task->save();
+
+    return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
 }
-
-    Task::create($data);
-
-    return redirect()->route('tasks.index')->with('success', 'Task created successfully!');
-}
-
-
-
 
     /**
      * Display the specified task.
