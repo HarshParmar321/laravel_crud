@@ -20,12 +20,12 @@
         @foreach($tasks as $task)
             <tr>
                 <td>
-                    @if($task->image)
-                        <img src="{{ asset('storage/' . $task->image) }}" width="80" height="80">
-                    @else
-                        N/A
-                    @endif
-                </td>
+    @if ($task->image)
+        <img src="{{ asset('storage/' . $task->image) }}" width="100">
+    @else
+        N/A
+    @endif
+</td>
                 <td>{{ $task->title }}</td>
                 <td>{{ $task->description ?? '-' }}</td> {{-- ✅ Show description --}}
                 <td>{{ $task->due_date ?? '-' }}</td>

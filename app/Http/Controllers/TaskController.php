@@ -41,8 +41,9 @@ class TaskController extends Controller
     $data['is_completed'] = $request->has('is_completed');
 
     if ($request->hasFile('image')) {
-        $data['image'] = $request->file('image')->store('tasks', 'public');
-    }
+    $imagePath = $request->file('image')->store('tasks', 'public');
+    $task->image = $imagePath;
+}
 
     Task::create($data);
 

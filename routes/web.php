@@ -23,9 +23,3 @@ Route::get('/debug-error', function () {
     }
     return 'Log file not found';
 });
-
-
-Route::get('/storage-link', function () {
-    Artisan::call('storage:link');
-    return '✅ Storage link created!';
-});
